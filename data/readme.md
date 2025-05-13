@@ -1,0 +1,1 @@
+In specific code files, we don't use completely English - language versions of the files, as conditions such as regions vary when obtaining data. However, importantly, the language doesn't matter. DNE only needs to use the data within them. 
