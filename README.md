@@ -25,13 +25,13 @@
 The data files used in the paper are in the folder: ./data
 
 ### 📊 Virtual Weekly New Cases Data 
-| Week | Chiyoda City | Chuo City | Minato City | Shinjuku City | Shibuya City | Hachioji City | Tachikawa City | Nerima City | Suginami City | Toshima City | Koto City | Edogawa City | Itabashi City | Adachi City | Nakano City | Setagaya City | Shinagawa City | Sumida City | Arakawa City | Bunkyo City | Taito City | Kita City | Nerima City |
-|------|--------------|-----------|--------------|----------------|---------------|----------------|-----------------|---------------|----------------|----------------|------------|---------------|------------------|----------------|---------------|------------------|------------------|---------------|----------------|----------------|---------------|---------------|
-| 2025.1 | 3 | 5 | 4 | 7 | 6 | 3 | 5 | 8 | 5 | 7 | 3 | 7 | 2 | 4 | 2 | 6 | 4 | 9 | 6 | 6 | 8 | 4 | 5 |
-| 2025.2 | 4 | 4 | 5 | 6 | 5 | 2 | 6 | 7 | 3 | 6 | 4 | 6 | 3 | 5 | 3 | 5 | 5 | 7 | 5 | 4 | 7 | 3 | 4 |
-| 2025.3 | 2 | 6 | 3 | 8 | 7 | 5 | 4 | 6 | 4 | 8 | 5 | 5 | 4 | 3 | 4 | 4 | 6 | 6 | 3 | 7 | 6 | 5 | 6 |
-| 2025.4 | 5 | 3 | 6 | 5 | 4 | 4 | 7 | 3 | 7 | 5 | 6 | 4 | 5 | 6 | 5 | 3 | 7 | 3 | 4 | 4 | 9 | 6 | 3 |
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... |
+| Week     | Chiyoda City | Chuo City | Minato City | Shinjuku City | Shibuya City | Hachioji City | Tachikawa City | Nerima City | Suginami City | Toshima City | Koto City | Edogawa City | Itabashi City | Adachi City | Nakano City | Setagaya City | Shinagawa City | Sumida City | Arakawa City | Bunkyo City | Taito City | Kita City |
+|----------|--------------|-----------|-------------|----------------|---------------|----------------|-----------------|-------------|----------------|----------------|------------|---------------|------------------|----------------|---------------|------------------|------------------|---------------|----------------|----------------|---------------|
+| 2025.1   | 3            | 5         | 4           | 7              | 6             | 3              | 5               | 8           | 5              | 7              | 3          | 7             | 2                | 4              | 2             | 6                | 4                | 9             | 6              | 6              | 8             | 4           |
+| 2025.2   | 4            | 4         | 5           | 6              | 5             | 2              | 6               | 7           | 3              | 6              | 4          | 6             | 3                | 5              | 3             | 5                | 5                | 7             | 5              | 4              | 7             | 3           |
+| 2025.3   | 2            | 6         | 3           | 8              | 7             | 5              | 4               | 6           | 4              | 8              | 5          | 5             | 4                | 3              | 4             | 4                | 6                | 6             | 3              | 7              | 6             | 5           |
+| 2025.4   | 5            | 3         | 6           | 5              | 4             | 4              | 7               | 3           | 7              | 5              | 6          | 4             | 5                | 6              | 5             | 3                | 7                | 3             | 4              | 4              | 9             | 6           |
+| ...      | ...          | ...       | ...         | ...            | ...           | ...            | ...             | ...         | ...            | ...            | ...        | ...           | ...              | ...            | ...           | ...              | ...              | ...           | ...            | ...            | ...           |
 
 > ✅ Notes:
 > - All data is **randomly generated** for demonstration purposes, But all the data in the folder are official data released by the authorities.
