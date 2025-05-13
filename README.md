@@ -1,5 +1,11 @@
 # Dynamic network entropy (DNE) for pinpointing the pre-outbreak stage of infectious disease
- Infectious disease outbreaks have the potential to result in substantial human casualties and financial losses. Issuing timely warnings and taking appropriate measures before infectious disease outbreaks can effectively hinder or even prevent the spread of epidemics. However, the spread of infectious diseases is a complex and dynamic process that involves both biological and social systems. Consequently, accurately predicting the onset of infectious disease outbreaks in real-time poses a significant challenge. In this study, we have developed a computational approach called dynamic network entropy (DNE) by constructing city networks and leveraging extensive hospital visit record data to pinpoint early warning signals for infectious disease outbreaks. Specifically, the proposed method can accurately identify pre-outbreaks of two infectious diseases including influenza and hand, foot, and mouth disease (HFMD). The predicted early warning signals preceded the outbreaks or initial peaks by at least 6 weeks for influenza and 5 weeks for HFMD. Therefore, by harnessing detailed dynamic and high-dimensional information, our DNE method presents an innovative strategy for identifying the critical point or pre-outbreaks stage prior to the catastrophic transition into a pandemic outbreak, which holds significant potential for application in the field of public health surveillance.
+## Algorithm:
+- The main algorithms of the DNE method are implemented in `Shang_Tokyo_FLU.py` (Influenza Outbreak Early Warning) and `shang_Tokyo_HMFD.py` (HFMD Outbreak Early Warning).
+- The comparative SP-DNM and MST-DNM algorithms are located in `HFMD_SP_DMN.py` and `HMFD_MST_DMN.py` respectively.
+- The Time-window Entropy algorithm is stored in the folder `./TWS`.
+- The data and algorithms for simulation experiments are stored in the folder `./Simulation_Experiment`.
+
+**At present, the paper is under review. We have only made public the code of the algorithm part involved in the paper. Once the paper is accepted, the complete drawing code will be updated for replication.**
 
 ## Advantages of the Dynamic Network Entropy (DNE) Method
 
@@ -35,6 +41,4 @@ The data files used in the paper are in the folder: ./data
 
 > ✅ Notes:
 > - All data is **randomly generated** for demonstration purposes, But all the data in the folder are official data released by the authorities.
-
-**At present, the paper is in the external review state. We have only made public the code of the algorithm part involved in the paper. Once the paper is accepted, the complete drawing code will be updated for replication.** 
-
+> - We are grateful for the suggestions from all the anonymous reviewers for the improvement of this article.
