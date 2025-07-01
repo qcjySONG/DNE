@@ -5,34 +5,34 @@ import pickle
 import numpy as np  
 
 # --------------------------  
-# 设定设备  
+# Set device  
 # --------------------------  
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  
 
 # --------------------------  
-# 读取数据并做log变换处理  
+# Load data and apply log transformation  
 # --------------------------  
 with open('/home/amax/qcjySONG/tarindata.pkl', 'rb') as f:  
-    data_np = pickle.load(f)  # numpy数组, shape = (988, 23)  
+    data_np = pickle.load(f)  # numpy array, shape = (988, 23)  
 
-# 对原始数据进行log1p变换，防止0值带来的问题  
+# Apply log1p transformation to the original data to handle zero values  
 data_np_log = np.log1p(data_np)  
 
-# 转成tensor  
+# Convert to tensor  
 data_log = torch.tensor(data_np_log, dtype=torch.float32)  
 
 # --------------------------  
-# Z-score标准化（在log空间）  
+# Z-score normalization (in log space)  
 # --------------------------  
 mean = data_log.mean(dim=0)    # (23,)  
 std = data_log.std(dim=0)      # (23,)  
 data_normalized = (data_log - mean) / std  
 
 # --------------------------  
-# 超参数  
+# Hyperparameters  
 # --------------------------  
-input_window = 52    # 过去16周  
-output_window = 156  # 未来156周  
+input_window = 52    # Past 52 weeks  
+output_window = 156  # Future 156 weeks  
 batch_size = 4  
 d_model = 128  
 nhead = 8  
@@ -44,7 +44,7 @@ num_epochs = 100
 num_regions = 23  
 
 # --------------------------  
-# 自定义Dataset  
+# Custom Dataset  
 # --------------------------  
 class DiseaseDataset(Dataset):  
     def __init__(self, data, input_window, output_window):  
@@ -61,7 +61,7 @@ class DiseaseDataset(Dataset):
         return x, y  
 
 # --------------------------  
-# 位置编码器  
+# Positional Encoding  
 # --------------------------  
 class PositionalEncoding(nn.Module):  
     def __init__(self, d_model, max_len=5000):  
@@ -82,7 +82,7 @@ class PositionalEncoding(nn.Module):
         return x  
 
 # --------------------------  
-# Transformer模型  
+# Transformer Model  
 # --------------------------  
 class DiseaseTransformer(nn.Module):  
     def __init__(self, input_size, d_model, nhead, num_layers, dim_feedforward, output_size, dropout=0.1):  
@@ -100,19 +100,19 @@ class DiseaseTransformer(nn.Module):
         src = self.input_proj(src)  
         src = self.pos_encoder(src)  
         memory = self.transformer_encoder(src)  
-        # 取序列最后时间步的输出做预测  
+        # Use the output of the last time step of the sequence for prediction  
         out = memory[:, -1, :]  
         out = self.decoder(out)  
         return out  
 
 # --------------------------  
-# 准备数据加载  
+# Prepare data loading  
 # --------------------------  
 dataset = DiseaseDataset(data_normalized, input_window, output_window)  
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)  
 
 # --------------------------  
-# 实例化模型  
+# Instantiate the model  
 # --------------------------  
 model = DiseaseTransformer(  
     input_size=num_regions,  
@@ -124,12 +124,12 @@ model = DiseaseTransformer(
     dropout=dropout  
 ).to(device)  
 
-# 损失函数和优化器  
+# Loss function and optimizer  
 criterion = nn.MSELoss()  
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)  
 
 # --------------------------  
-# 训练模型  
+# Train the model  
 # --------------------------  
 for epoch in range(num_epochs):  
     model.train()  
@@ -151,29 +151,28 @@ for epoch in range(num_epochs):
     print(f'Epoch {epoch+1}/{num_epochs}, Loss: {total_loss/len(dataloader):.6f}')  
 
 # --------------------------  
-# 预测未来156周  
+# Predict the next 156 weeks  
 # --------------------------  
 model.eval()  
 with torch.no_grad():  
-    recent_data = data_normalized[-input_window:].unsqueeze(0).to(device)  # (1, 16, 23)  
+    recent_data = data_normalized[-input_window:].unsqueeze(0).to(device)  # (1, 52, 23)  
     pred = model(recent_data)  # (1, 23*156)  
     pred = pred.view(output_window, num_regions)  # (156, 23)  
     pred = pred.cpu()  
 
 # --------------------------  
-# 反标准化并反log，恢复真实人数  
+# Inverse normalization and inverse log to restore the actual counts  
 # --------------------------  
-pred_log = pred * std + mean       # 反标准化（log空间）  
-pred_real = torch.expm1(pred_log)  # exp(x) - 1，还原原始正数空间  
-# 防止负数（理论不应该，有就置0）  
+pred_log = pred * std + mean       # Inverse normalization (in log space)  
+pred_real = torch.expm1(pred_log)  # exp(x) - 1, restore to original positive space  
+# Prevent negative values (should not occur in theory, set to 0 if they do)  
 pred_real = torch.clamp(pred_real, min=0)  
-# 小于1的取0，大于等于1的上取整  
+# Set values less than 1 to 0, and take the ceiling for values greater than or equal to 1  
 pred_real = torch.where(pred_real < 1, torch.tensor(0., device=pred_real.device), torch.ceil(pred_real))  
 pred_real_np = pred_real.numpy()  
 
 # --------------------------  
-# 保存预测结果到pkl文件  
+# Save prediction results to a pkl file  
 # --------------------------  
 with open('/home/amax/qcjySONG/future_prediction_52.pkl', 'wb') as f:  
     pickle.dump(pred_real_np, f)  
-

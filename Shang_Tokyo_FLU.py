@@ -1,4 +1,3 @@
-#QBS  1601311287@qq.com
 import math
 import pandas as pd
 import xlrd
@@ -88,7 +87,7 @@ def ztest(x, m, sigma, alpha=0.05, alternative='two-sided'):
     return h,p
 
 
-#需要调整参数
+# Parameters to be adjusted
 '''
 HFMD:
 time_window=6
@@ -109,53 +108,53 @@ for gap_year in range(25,26):
     book3 = xlwt.Workbook()
     book4 = xlwt.Workbook()
 
-    # 设置中文字体
-    plt.rcParams['font.sans-serif'] = ['SimHei']  # 指定默认字体
-    # 设置英文字体为 Times New Roman
+    # Set Chinese font
+    plt.rcParams['font.sans-serif'] = ['SimHei']  # Specify default font
+    # Set English font to Times New Roman
     plt.rcParams['font.family'] = 'Times New Roman'
-    plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像时负号'-'显示为方块的问题
-    # 设置全局字体大小
+    plt.rcParams['axes.unicode_minus'] = False  # Solve the problem of the negative sign '-' showing as a square when saving images
+    # Set global font size
     plt.rcParams.update({'font.size': 14})
 
-    np.set_printoptions(threshold=10000, linewidth=10000, suppress=True)  # 设置使np输出时更美观
+    np.set_printoptions(threshold=10000, linewidth=10000, suppress=True)  # Set np output to be more visually appealing
 
-    # 读取Excel文件
+    # Read Excel file
     excel_file = "data/东京都流感人数.xls"  # "data/东京都手足口病人数.xls" #"data/东京都流感人数.xls" "data/东京都肠胃炎人数.xls"
     df = pd.read_excel(excel_file)
-    # 获取做图时需要的行数，列数固定每行两列
-    df_len = len(df) - file_start_week  # 减去22是什么意思
+    # Get the number of rows needed for plotting, columns are fixed at two per row
+    df_len = len(df) - file_start_week  # What does subtracting 22 mean?
     year = df_len // 52
     if year % 2 == 1:
         rows = (year // 2) + 1
     else:
         rows = year // 2
 
-    point_num = df.shape[1] - 2  # 假设每个文件的前两列均为 时间 和 总和
+    point_num = df.shape[1] - 2  # Assume the first two columns of each file are Time and Total
 
-    # 作图的起始年份
+    # Starting year for plotting
     start_year = round(df.iloc[1][0])
 
-    # 创建图层
+    # Create figure layers
     fig = plt.figure(figsize=(30, 7 * rows))
     fig1 = plt.figure(figsize=(18, 4 * rows))
-    gap = []  # 提前多少周预测出来？
-    It_5 = []  # 记录后5个It值
-    for f in range(8, 19):  # 由于程序编写的问题 1-21为2000-2024的
+    gap = []  # How many weeks in advance to predict?
+    It_5 = []  # Record the last 5 It values
+    for f in range(8, 19):  # Due to a programming issue, 1-21 represents the years 2000-2024
         '''
-        #年：{
-            地区：{It分数，每周}
-            预警点
-            爆发点
-        }
+        #Year: {
+        #    Region: {It score, weekly}
+        #    Alert point
+        #    Outbreak point
+        #}
         '''
 
-        weight_str = []  # 权重文件
-        # 感染人数数据，作图用
+        weight_str = []  # Weight file
+        # Infection number data, for plotting
         infection_number = df.iloc[file_start_week + 52 * f: 52 + file_start_week + 52 * f,
-                           1].tolist()  # iloc是根据行号进行切片，行号从0开始
-        # 起始行 22 + 52 * f  终止行 74 + 52 * f  74=22+52  选取第2列（总感染人数列）
+                           1].tolist()  # iloc slices based on row number, which starts from 0
+        # Start row 22 + 52 * f, End row 74 + 52 * f, where 74=22+52. Select the 2nd column (total infection count column)
         max_num = max(infection_number)
-        index = infection_number.index(max_num) + 1  # 应该是爆发期绘图的位置
+        index = infection_number.index(max_num) + 1  # This should be the position for plotting the outbreak period
 
         startweek = file_start_week - time_window + 1 + 52 * f  # 18=22-4
         endweek = 52 + file_start_week + 52 * f  # 74=52+22
@@ -163,9 +162,9 @@ for gap_year in range(25,26):
         week = endweek - startweek + 1
 
         book = xlrd.open_workbook(
-            'data/东京都流感定点报告数.xls')  # 应该是点的内容  'data/东京都手足口病定点报告数.xls' 'data/东京都流感定点报告数.xls' 'data/东京都肠胃炎定点报告数.xls'
+            'data/东京都流感定点报告数.xls')  # This should be the content of the points/stations.  'data/东京都手足口病定点报告数.xls' 'data/东京都流感定点报告数.xls' 'data/东京都肠胃炎定点报告数.xls'
         sheet = book.sheet_by_index(0)
-        data = np.zeros((week, point_num))  # 23是 东京都 有23个地区
+        data = np.zeros((week, point_num))  # 23 is for Tokyo, which has 23 wards/regions
         for col in range(startweek, endweek + 1):
             for row in range(0, point_num):
                 data[col - startweek][row] = sheet.cell(col, row + 1).value  # read data
@@ -195,7 +194,7 @@ for gap_year in range(25,26):
                    [21, 22, 20, 8, 14],
                    [22, 4, 20, 21]]
 
-        # 从网络中提取边的信息,为了顺利绘图，无向图
+        # Extract edge information from the network, for smooth plotting, it's an undirected graph
         edge = []
         for item in network:
             for i in range(1, item.__len__()):
@@ -207,25 +206,25 @@ for gap_year in range(25,26):
         sheet1 = book1.add_sheet(str(startweek) + '-' + str(endweek))
         delta_PCC = np.zeros((network.__len__(), week - time_window))  # (23 , 52)
         numTemp = 0
-        for i in range(0, week - time_window):  # 52  week=57，时间窗口多5
-            # 时间for
+        for i in range(0, week - time_window):  # 52  week=57, time window adds 5
+            # Time loop
             b = 0
             for node in network:  # 23
-                # 地图for
-                # 两者之间的皮尔逊相关系数
+                # Node/Region loop
+                # Pearson correlation coefficient between the two
                 pcc_temp3 = 0
                 pcc_ij = []
                 pcct_ij = []
 
-                for j in range(1, node.__len__()):  # 遍历邻接点
-                    # 邻接点for
-                    # node[0]为当前中心结点
+                for j in range(1, node.__len__()):  # Iterate through adjacent nodes
+                    # Adjacent node loop
+                    # node[0] is the current central node
                     pcc_temp1 = abs(kendalltau(data[i: i + time_window, node[0]], data[i: i + time_window, node[j]])[
-                                        0])  # 中心节点t-1时刻与其它节点的皮尔森相关系数
+                                        0])  # Kendall's tau of the central node with other nodes at time t-1
 
                     pcc_temp2 = abs(kendalltau(data[i + 1: i + time_window + 1, node[0]],
-                                               data[i + 1: i + time_window + 1, node[j]])[0])  # 中心节点t时刻与其它节点的皮尔森相关系数
-                    # 为什么要注释掉？
+                                               data[i + 1: i + time_window + 1, node[j]])[0])  # Kendall's tau of the central node with other nodes at time t
+                    # Why is this commented out?
                     # pcc_temp1 = np.nan_to_num(pcc_temp1)
                     # pcc_temp2 = np.nan_to_num(pcc_temp2)
                     weight = abs(pcc_temp2 - pcc_temp1)  # dieta_PCCt
@@ -235,30 +234,30 @@ for gap_year in range(25,26):
                     weight_zi.append(node[j])
                     weight_zi.append(weight)
                     weight_str.append(weight_zi)
-                    # 中心节点与一阶邻点的权重
+                    # Weight between the central node and its first-order neighbors
                     pcc_ij.append(weight)
-                    # print('节点', node[0], '与节点', node[j], '的权重', weight)
-                    # 总和
-                    pcc_temp3 += weight  # 求概率
-                # print('节点', node[0], pcc_temp3)
-                if pcc_temp3 == 0:  # 总和为0，概率当然为0
+                    # print('Node', node[0], 'and node', node[j], 'weight is', weight)
+                    # Sum
+                    pcc_temp3 += weight  # For calculating probability
+                # print('Node', node[0], pcc_temp3)
+                if pcc_temp3 == 0:  # If the sum is 0, the probability is of course 0
                     delta_PCC[b][i] == 0
                     b += 1
-                    continue  # 跳出该中心节点的范围
-                for k in range(0, pcc_ij.__len__()):  # 为什么不用len(pcc_ij)
-                    pcct_ij.append(pcc_ij[k] / pcc_temp3)  # 求概率
-                # 计算零的个数
+                    continue  # Break out of the scope of this central node
+                for k in range(0, pcc_ij.__len__()):  # Why not use len(pcc_ij)
+                    pcct_ij.append(pcc_ij[k] / pcc_temp3)  # Calculate probability
+                # Count the number of zeros
                 # zero_count = sum(1 for prob in pcct_ij if prob == 0)
                 entropy = 0
                 for h in range(0, pcct_ij.__len__()):
-                    if pcct_ij[h] > 0:  # 避免log(0)的情况
+                    if pcct_ij[h] > 0:  # Avoid log(0) situation
                         entropy -= (pcct_ij[h]) * math.log(pcct_ij[h], 2)
                 # entropy = (1/(math.log(node.__len__(), 2))) * entropy
                 # entropy = (1 / 100) * entropy
-                # 标准差
+                # Standard deviation
                 sd_temp1 = np.std(data[i: i + time_window, node[0]], ddof=1)
                 sd_temp2 = np.std(data[i + 1: i + time_window + 1, node[0]], ddof=1)
-                delta_PCC[b][i] = math.sqrt(abs(sd_temp2 - sd_temp1)) * entropy  # 单个节点的It指标
+                delta_PCC[b][i] = math.sqrt(abs(sd_temp2 - sd_temp1)) * entropy  # It indicator for a single node
                 b += 1
 
 
@@ -266,21 +265,20 @@ for gap_year in range(25,26):
             for j in range(0, network.__len__()):  # 23
                 sheet1.write(j + 1, i + 1, delta_PCC[j][i])
                 if i == 0:
-                    # 纵坐标
+                    # y-axis coordinate (label)
                     sheet1.write(j + 1, 0, str(network[j][0] + 1))
             sheet1.write(0, i + 1, startweek + time_window + i)
 
         # print("delta_PCC:",delta_PCC.shape)#(23, 52)
 
-        # 求和
-        It = []  # 所有节点的It值
+        # Summation
+        It = []  # It values for all nodes
         for i in range(0, week - time_window):
             # delta_PCC (23 , 52)
-            It.append(np.sum(delta_PCC[:, i]) / network.__len__())  # 计算了所选列中所有数值的总和均值
+            It.append(np.sum(delta_PCC[:, i]) / network.__len__())  # Calculate the mean of the sum of all values in the selected column
             sheet1.write(network.__len__() + 1, i + 1, It[i])
 
         #len(It)=52,The DNE score represents the 52 weeks of each year, and you can make critical judgments based on it.
-
 
 
 

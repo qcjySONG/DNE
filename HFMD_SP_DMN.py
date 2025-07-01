@@ -9,17 +9,17 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 import warnings
 warnings.filterwarnings("ignore")
 np.set_printoptions(threshold=10000, linewidth=10000, suppress=True)
-# 检查目录是否存在，如果不存在则创建
+# Check if the directory exists, if not, create it
 directory = 'SP_DNM_HMDL'
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-# 设置中文字体
-plt.rcParams['font.sans-serif'] = ['SimHei']  # 指定默认字体
-# 设置英文字体为 Times New Roman
+# Set Chinese font
+plt.rcParams['font.sans-serif'] = ['SimHei']  # Specify default font
+# Set English font to Times New Roman
 plt.rcParams['font.family'] = 'Times New Roman'
-plt.rcParams['axes.unicode_minus'] = False  # 解决保存图像时负号'-'显示为方块的问题
-# 设置全局字体大小
+plt.rcParams['axes.unicode_minus'] = False  # Solve the problem of the negative sign '-' showing as a square when saving images
+# Set global font size
 plt.rcParams.update({'font.size': 14})
 
 #ttest
@@ -80,31 +80,31 @@ def Dijkstra(G, v0, INF=999):  # Dijkstra's algorithm
                 minv = v
     return dis, way
 
-# 读取Excel文件
-excel_file = "data/东京都手足口病人数.xls"  #未标准化的数据
+# Read Excel file
+excel_file = "data/东京都手足口病人数.xls"  # Un-standardized data
 df = pd.read_excel(excel_file)
-# 获取做图时需要的行数，列数固定每行两列
+# Get the number of rows needed for plotting, columns are fixed at two per row
 df_len = len(df) - 22
 year = df_len // 52
 if year % 2 == 1:
     rows = (year // 2) + 1
 else:
     rows = year // 2
-# 作图的起始年份
+# Starting year for plotting
 start_year = round(df.iloc[1][0])
 
 
 time_window = 6
 file_start_week=8
 for f in range(8, 20):
-    # 感染人数数据，作图用
-    infection_number = df.iloc[file_start_week + 52 * f: 52 + file_start_week + 52 * f, 1].tolist()  # iloc是根据行号进行切片，行号从0开始
+    # Infection number data, for plotting
+    infection_number = df.iloc[file_start_week + 52 * f: 52 + file_start_week + 52 * f, 1].tolist()  # iloc slices based on row number, which starts from 0
     max_num = max(infection_number)
     index = infection_number.index(max_num) + 1
     startweek = file_start_week - time_window + 1 + 52 * f  # 18=22-4
     endweek = 52 + file_start_week + 52 * f  # 74=52+22
     week = endweek - startweek + 1
-    book = xlrd.open_workbook('data/东京都手足口病定点报告数.xls')#标准化的数据
+    book = xlrd.open_workbook('data/东京都手足口病定点报告数.xls') # Standardized data
     sheet = book.sheet_by_index(0)
     data = np.zeros((week, 23))
     for col in range(startweek, endweek + 1):
@@ -149,7 +149,7 @@ for f in range(8, 20):
     delta_PCC = np.zeros((edge.__len__(), week - 1))
     for i in range(0, edge.__len__()):
         for j in range(0, week - 1):
-            # 两者之间的皮尔逊相关系数
+            # Pearson correlation coefficient between the two
             if len(data[0: j + 1, edge[i][0]]) < 2 or len(data[0: j + 1, edge[i][1]]) < 2:
                 pcc_temp1 = 0
             else:
