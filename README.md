@@ -8,7 +8,7 @@
 
 
 <div align="center">
-  <img src="assets/Abstract.png" alt="Introduction Figure" width="600"/>
+  <img src="assets/Abstract.png" alt="Introduction Figure" width="800"/>
 </div>
 
 ## 📖 Introduction
