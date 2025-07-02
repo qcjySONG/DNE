@@ -1,6 +1,8 @@
 <h1 align="center">🚀Dynamic network entropy (DNE) for pinpointing the pre-outbreak stage of infectious disease</h1>
 
-<h2 align="center">🎉 <strong>J. R. Soc. Interface ACCEPTED</strong> 🔥</h2>
+<h2 align="center" style="font-size: 1.5em; font-weight: bold;">
+  🎉 J. R. Soc. Interface ACCEPTED 🔥
+</h2>
 
 <div align="center">
   <img src="assets/Abstract.png" alt="Introduction Figure" width="800"/>
