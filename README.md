@@ -4,7 +4,7 @@
   <h2 style="font-size: 1.5em; font-weight: bold; margin-bottom: 0.5em;">
     🎉 J. R. Soc. Interface ACCEPTED 🔥
   </h2>
-  <img src="assets/Abstract.png" alt="Introduction Figure" width="800"/>
+  <img src="assets/Abstract.png" alt="Introduction Figure" width="850"/>
 </div>
 
 ## 📖 Introduction
